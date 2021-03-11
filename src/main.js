@@ -11,7 +11,6 @@ let nextTick = (cb) => {
 
 let queue = [];
 let queueJobs = (job) => {
-	console.log('add')
 	if (!queue.includes(job)) {
 		queue.push(job);
 	}
@@ -33,7 +32,6 @@ class Dep {
 		if (active) {
 			this.deps.add(active);
 			active.deps.push(this.deps)
-			console.log('this.deps', this.deps)
 		}
 	}
 	notify() {
@@ -203,8 +201,9 @@ let myCreatReactive = (target,prop,initValue)=>{
 	})
 }
 export const reactive = obj=>{
-	/* let dep =  new Dep();
+	let dep =  new Dep();
 	Object.keys(obj).forEach(key=>{
+		let val = obj[key]
 		Object.defineProperty(obj, key, {
 			get: function () {
 				//收集依赖
@@ -217,10 +216,10 @@ export const reactive = obj=>{
 				dep.notify()
 			}
 		})
-	}) */
-	Object.keys(obj).forEach(key=>{
-		myCreatReactive(obj, key,obj[key])
 	})
+	/* Object.keys(obj).forEach(key=>{
+		myCreatReactive(obj, key,obj[key])
+	}) */
 	return obj;
 }
 
@@ -289,14 +288,19 @@ const store = new Store({
 		count:0
 	},
 	mutations:{
-		addCount(state,payload=1){
+		addCount(state,payload=2){
 			state.count+=payload
 		}
-	}
+	},
+	plugins:[(store)=>{
+		store.subscribe((mutations,state)=>{
+			console.log(mutations)
+		})
+	}]
 })
 console.log(store)
 document.getElementById("add3").addEventListener("click", () => {
-	store.commit('addCount')
+	store.commit('addCount',2)
 })
 watchEffect(() => { 
 	str = `store.count===>${store.state.count}`

@@ -8,7 +8,13 @@
 			}
 			
 			const {component} = route;
-			return <component />;
+			const hook={
+				init(vnode){
+					console.log('vnode<><><><><><>',vnode)
+					route.instance = vnode.componentInstance;
+				}
+			}
+			return <component hook={hook}/>;
 		}
 	}
 </script>

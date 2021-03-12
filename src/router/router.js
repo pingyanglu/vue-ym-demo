@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-// import VueRouter from './myRouter'
+// import VueRouter from 'vue-router'
+import VueRouter from './myRouter'
 
 import Foo from '@/pages/foo'
 import Bar from '@/pages/bar'
@@ -22,6 +22,7 @@ const router =  new VueRouter({
 
 router.beforeEach((to,from,next)=>{
 	console.log('router.beforeEach',to,from);
+	// next(false);
 	next();
 })
 router.beforeResolve((to,from,next)=>{
